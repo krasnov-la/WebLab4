@@ -1,7 +1,7 @@
 ﻿using backend.Models.DataBase;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.DataAcess
+namespace backend.DataAccess
 {
     public class AppDbContext : DbContext
     {
