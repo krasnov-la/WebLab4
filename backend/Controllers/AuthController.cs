@@ -3,6 +3,7 @@ using backend.DataAccess.Repository;
 using backend.Models.API;
 using backend.Models.DataBase;
 using backend.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -11,6 +12,7 @@ namespace backend.Controllers
     [Route("/[controller]")]
     public class AuthController : ControllerBase
     {
+        PasswordHasher<User> _hasher = new PasswordHasher<User>();
         ITokenService _tokens;
         IUnitOfWork _unit;
         public AuthController(ITokenService tokenService, IUnitOfWork unit)
@@ -31,10 +33,12 @@ namespace backend.Controllers
                 guid: Guid.NewGuid(),
                 login: request.Login,
                 display: request.DisplayName,
-                password: request.Password,
+                password: "",
                 refresh: _tokens.GenerateRefreshToken(),
                 refreshExp: DateTime.Now.AddDays(7)
             );
+
+            user.Password = _hasher.HashPassword(user, request.Password);
 
             string access = _tokens.GenerateAccessToken(new List<Claim> {
                 new Claim(ClaimTypes.Name, user.Login)
@@ -54,9 +58,12 @@ namespace backend.Controllers
         {
             if (request is null) return BadRequest("Request Inalid");
 
-            var user = _unit.UserRepo.ReadFirst(u => u.Login == request.Login && u.Password == request.Password);
+            var user = _unit.UserRepo.ReadFirst(u => u.Login == request.Login);
 
             if (user is null) return Unauthorized();
+
+            if (_hasher.VerifyHashedPassword(user, user.Password, request.Password) != PasswordVerificationResult.Success)
+                return Unauthorized();
 
             user.RefreshToken = _tokens.GenerateRefreshToken();
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
