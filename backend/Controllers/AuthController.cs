@@ -93,7 +93,7 @@ namespace backend.Controllers
 
             var user = _unit.UserRepo.ReadFirst(u => u.Login == login);
 
-            if (user is null || user.RefreshToken != refresh || user.RefreshTokenExpiryTime < DateTime.Now)
+            if (user is null || user.RefreshToken is null || user.RefreshToken != refresh || user.RefreshTokenExpiryTime < DateTime.Now)
                 return BadRequest("Request Invalid");
 
             var newAccess = _tokens.GenerateAccessToken(principal.Claims);

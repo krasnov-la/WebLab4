@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.DataAccess;
@@ -11,9 +12,11 @@ using backend.DataAccess;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231120120026_RemovedRuns")]
+    partial class RemovedRuns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +40,6 @@ namespace backend.Migrations
                     b.Property<int>("HighScore")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("LastPasswordChange")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -50,6 +50,7 @@ namespace backend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("RefreshToken")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("RefreshTokenExpiryTime")
