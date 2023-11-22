@@ -28,6 +28,7 @@ namespace backend.Controllers
             if (request is null) return BadRequest("Request invalid");
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var user = _unit.UserRepo.ReadFirst(u => u.Login == identity.Name);
+            if (user is null) return Unauthorized();
             user.DisplayName = request.NewDisplayName;
 
             _unit.UserRepo.Update(user);
@@ -42,6 +43,7 @@ namespace backend.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var user = _unit.UserRepo.ReadFirst(u => u.Login == identity.Name);
+            if (user is null) return Unauthorized();
             
             if (user.HighScore > request.NewHighScore) return Ok("No update needed");
 
@@ -59,6 +61,7 @@ namespace backend.Controllers
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var user = _unit.UserRepo.ReadFirst(u => u.Login == identity.Name);
+            if (user is null) return Unauthorized();
 
             if (DateTime.Now - user.LastPasswordChange < new TimeSpan(7, 0, 0, 0)) 
                 return BadRequest("Password can be changed once every 7 days");
@@ -72,6 +75,20 @@ namespace backend.Controllers
             _unit.Save();
 
             return Ok("Updated");
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public IActionResult Delete()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var user = _unit.UserRepo.ReadFirst(u => u.Login == identity.Name);
+            if (user is null) return Unauthorized();
+
+            _unit.UserRepo.Remove(user);
+            _unit.Save();
+
+            return Ok("Deleted");
         }
     }
 }
