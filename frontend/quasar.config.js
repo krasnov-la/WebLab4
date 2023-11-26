@@ -30,8 +30,7 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-
-
+      'init_ion_phaser.ts'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
