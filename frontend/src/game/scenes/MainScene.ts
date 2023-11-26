@@ -13,7 +13,7 @@ export class MainScene extends Scene {
     public _playerBullets : Phaser.Physics.Arcade.Group | undefined;
     public _bossBullets : Phaser.Physics.Arcade.Group | undefined;
     private _ticks = 0;
-  
+
     constructor () {
       super({ key: 'MainScene' });
     }
@@ -21,7 +21,7 @@ export class MainScene extends Scene {
     create() {
       this._boss = new Boss(this);
       this._player = new Player(this, 100, Math.PI);
-      
+
       this._cursorKeys = this.input.keyboard?.createCursorKeys();
       //Описание физики
       this._playerBullets = this.physics.add.group();
@@ -67,7 +67,7 @@ export class MainScene extends Scene {
 
     shoot() : void
     {
-      if (this._ticks % 15 != 0) return 
+      if (this._ticks % 15 != 0) return
       new PlayerBullet(this);
     }
   }
