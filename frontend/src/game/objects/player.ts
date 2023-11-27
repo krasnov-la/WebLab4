@@ -29,25 +29,33 @@ export class Player extends GameObjects.Sprite
     constructor(scene: Scene, radius : number, angle : number) 
     {
         super(scene, 0, 0, 'ship');
+        scene.physics.world.enableBody(this);
+        scene.add.existing(this);
+        this.scale = 0.05;
+        const body : any = this.body;
+        body.setSize(300, 300);
         this._canvas = scene.sys.game.canvas;
         this._radius = radius;
         this._angle = angle;
-        this.scale = 0.05;
         this.flipX = true;
-        this.scene.add.existing(this);
-        this.Reposition();
+        this.reposition();
     }
 
-    private Reposition()
+    private reposition()
     {
         this.x = this._radius * Math.cos(this._angle) + this._canvas.width / 2;
         this.y = -this._radius * Math.sin(this._angle) + this._canvas.height / 2;
         this.rotation = -this._angle;
     }
 
-    public Move(dRadius : number, dAngle : number) {
+    public move(dRadius : number, dAngle : number) {
         this.rad += dRadius;
         this.ang += dAngle;
-        this.Reposition();
+        this.reposition();
+    }
+
+    public damage() : void
+    {
+        this.destroy();
     }
 }

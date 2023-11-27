@@ -1,19 +1,24 @@
 import { MainScene } from "../scenes/MainScene";
-import { Bullet } from "./bullet"
+import { GameObjects } from 'phaser'
 
-export class PlayerBullet extends Bullet
+export class PlayerBullet extends GameObjects.Sprite
 {
     constructor(scene : MainScene)
     {
-        super(scene);
-        this
-    }
+        const x = scene._player ? scene._player.x : 0;
+        const y = scene._player ? scene._player.y : 0;
+        super(scene, x, y, 'bullet');
+        this.play('bullet_anim');
+        scene.physics.world.enableBody(this);
+        scene.add.existing(this);
+        const player = scene._player;
 
-    public override Move()
-    {
-        this._radius -= 2;
-        if (this._radius < 0) this.destroy();
-        this.x = this._radius * Math.cos(this._angle) + this._canvas.width / 2;
-        this.y = -this._radius * Math.sin(this._angle) + this._canvas.height / 2;
+        scene._playerBullets?.add(this);
+        if (this.body && player)
+        {
+            this.rotation = player.rotation - Math.PI / 2;
+            this.body.velocity.x = (-player.x + scene.sys.game.canvas.width / 2) / player.rad * 150;
+            this.body.velocity.y = (-player.y + scene.sys.game.canvas.height / 2) / player.rad * 150;
+        }
     }
 }

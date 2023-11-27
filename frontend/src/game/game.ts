@@ -14,7 +14,7 @@ export function launch() {
       keyboard: true
     },
     physics: {
-      default: 'arcade',
+      default: 'arcade'
     },
     parent: 'game',
     backgroundColor: '#201726',
