@@ -13,6 +13,10 @@ export class MainScene extends Scene {
     public _playerBullets : Phaser.Physics.Arcade.Group | undefined;
     public _bossBullets : Phaser.Physics.Arcade.Group | undefined;
     private _ticks = 0;
+
+    public get Ticks() : integer {
+      return this._ticks;
+    }
   
     constructor () {
       super({ key: 'MainScene' });
@@ -42,16 +46,16 @@ export class MainScene extends Scene {
       this._ticks++;
       this.handleKeyboard();
       this.shoot();
-      this.bossAttack();
+      this._boss?.StartAttack();
       if (this._bossBullets)
         for (let i = 0; i < this._bossBullets.getChildren().length; i++)
           this._bossBullets.getChildren()[i].update();
     }
 
-    bossAttack() : void{
+    /*bossAttack() : void{
       if (this._ticks % 50 != 0) return;
       this._boss?.Attack();
-    }
+    }*/
 
     handleKeyboard(): void
     {

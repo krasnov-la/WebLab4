@@ -3,9 +3,9 @@ import { MainScene } from "../scenes/MainScene";
 import { Pattern } from "./pattern";
 import { BossBullet } from "./bossBullet";
 
-export class RingPattern extends Pattern
+export class SpiralPattern extends Pattern
 {
-    private _speed : integer = 10;
+    private _speed : integer = 100;
 
     public get Speed() : integer {
         return this._speed;
@@ -15,7 +15,7 @@ export class RingPattern extends Pattern
         this._speed = Math.max(0, val);
     }
 
-    private _delay : integer = 1000;
+    private _delay : integer = 2500;
 
     public get Delay() : integer {
         return this._delay;
@@ -25,17 +25,21 @@ export class RingPattern extends Pattern
         this._delay = Math.max(0, val);
     }
 
-    public Spawn(scene : MainScene): Promise<string> {
-        return new Promise((resolve) => {
-            const ticksAtStart = scene.Ticks;
+    private _promise? : Promise<string>;
 
-            for(let i : integer = 0; i < 12; i++) {
-                new BossBullet(scene, i * Math.PI / 6, 100);
-            }
+    public Spawn(scene : MainScene): Promise<string> {
+        return this._promise = new Promise((resolve) => {
+            let i : integer = 0;
+            const bulletCount = 20;
+
+            const setIntId : any = setInterval(() => {
+                if(i >= bulletCount) clearInterval(setIntId);
+                new BossBullet(scene, i++ * 2 * Math.PI / bulletCount, 100);
+            }, this._speed);
 
             setTimeout(() => {
                 resolve("ring pattern end");
             }, this._delay);
-        })
+        });
     }
 }
