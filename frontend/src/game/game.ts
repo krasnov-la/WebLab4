@@ -6,9 +6,9 @@ export function launch() {
   return new Game({
     type: AUTO,
     scale: {
-      width: '80%',
+      width: '100%',
       autoCenter: Scale.CENTER_BOTH,
-      height: '80%',
+      height: '100%',
     },
     input: {
       keyboard: true
@@ -17,7 +17,7 @@ export function launch() {
       default: 'arcade'
     },
     parent: 'game',
-    backgroundColor: '#201726',
+    transparent: true,
     scene: [
       PreloadScene,
       MainScene
