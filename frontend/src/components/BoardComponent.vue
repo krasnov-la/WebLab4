@@ -23,10 +23,19 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, ref} from 'vue';
 import { QTableProps } from 'quasar';
+import axios from 'axios';
 
 const userName = ref('name3');
+const num = 5;
+
+axios.get(process.env.API + '/Leaderboard/{num}')
+    .then((response) => {
+      if (response.status == 200) {
+        const data = response.data;
+      } else console.log(response);
+    })
 
 const tableProps :QTableProps = {
   columns:[
