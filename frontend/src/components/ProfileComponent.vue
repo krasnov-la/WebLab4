@@ -40,15 +40,22 @@
 <script setup lang="ts">
 import axios from 'axios';
 import {ref} from 'vue';
+
 const nickName = ref('Name123');
 const password = ref('');
 const isPwd = ref(true);
 
 const onSubmit = () => {
+  console.log('Bearer ' + localStorage.getItem('token'))
   axios
     .post(process.env.API + '/User/Rename', {
       newDisplayName: nickName.value
-    })
+    },
+    {
+      headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token'), //TODO: valid authorize
+    }
+  })
     .then((response) => {
       if (response.status == 200) {
         console.log('Nick changed');
@@ -57,6 +64,11 @@ const onSubmit = () => {
   axios
     .post(process.env.API + '/User/UpdatePassword', {
       newPassword: password.value
+    },
+    {
+      headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token') //TODO: valid authorize
+    }
     })
     .then((response) => {
       if (response.status == 200) {

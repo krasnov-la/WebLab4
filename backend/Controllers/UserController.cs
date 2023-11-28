@@ -4,12 +4,14 @@ using backend.Models.API;
 using backend.Models.DataBase;
 using backend.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [ApiController]
+    [EnableCors("_myAllowSpecificOrigins")]
     [Route("/[controller]")]
     public class UserController : ControllerBase
     {

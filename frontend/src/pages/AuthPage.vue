@@ -45,7 +45,7 @@ const onSubmit = () => {
     .then((response) => {
       if (response.status == 200) {
         const data = response.data;
-        $q.localStorage.set('token', data.token);
+        $q.localStorage.set('token', data.accessToken);
         $q.localStorage.set('refreshToken', data.refreshToken);
         window.location.href = '/';
       } else console.log(response);
