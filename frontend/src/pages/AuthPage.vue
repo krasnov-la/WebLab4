@@ -28,7 +28,6 @@
 import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 const login = ref('');
 const password = ref('');
@@ -36,7 +35,6 @@ const password = ref('');
 const isPwd = ref(true);
 
 const $q = useQuasar();
-const $router = useRouter();
 
 const onSubmit = () => {
   axios
@@ -52,6 +50,5 @@ const onSubmit = () => {
         window.location.href = '/';
       } else console.log(response);
     });
-  console.log(login, password);
 };
 </script>
