@@ -34,32 +34,45 @@
             </div>
             <q-btn label="Save" type="submit" color="positive"/>
       </q-form>
+      <q-btn
+      class="q-ma-sm text-black"
+      size="xl"
+      color="white"
+      to="/"
+      style="border-radius: 10px"
+      >
+          Back to menu
+    </q-btn>
   </q-page>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios';
 import {ref} from 'vue';
+import {useQuasar} from 'quasar';
+
+const $q = useQuasar();
 
 const nickName = ref('Name123');
 const password = ref('');
 const isPwd = ref(true);
 
 const onSubmit = () => {
-  console.log('Bearer ' + localStorage.getItem('token'))
+  console.log('Bearer ' + $q.localStorage.getItem('token'))
   axios
     .post(process.env.API + '/User/Rename', {
       newDisplayName: nickName.value
     },
     {
       headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token'), //TODO: valid authorize
+      Authorization: 'Bearer ' + $q.localStorage.getItem('token'),
     }
   })
     .then((response) => {
       if (response.status == 200) {
+        $q.localStorage.set('name', nickName.value);
         console.log('Nick changed');
-      } else console.log(response);
+      }
     });
   axios
     .post(process.env.API + '/User/UpdatePassword', {
@@ -67,13 +80,13 @@ const onSubmit = () => {
     },
     {
       headers: {
-      Authorization: 'Bearer ' + localStorage.getItem('token') //TODO: valid authorize
+      Authorization: 'Bearer ' + $q.localStorage.getItem('token') //TODO: valid authorize
     }
     })
     .then((response) => {
       if (response.status == 200) {
         console.log('Password changed');
-      } else console.log(response);
+      } else console.log('not changed');
     });
 };
 </script>

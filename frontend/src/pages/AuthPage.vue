@@ -58,6 +58,7 @@ const onSubmit = () => {
           const data = response.data;
           $q.localStorage.set('token', data.accessToken);
           $q.localStorage.set('refreshToken', data.refreshToken);
+          $q.localStorage.set('name', data.name); //TODO: reciving data.name from API
           window.location.href = '/';
         } else console.log(response);
       });

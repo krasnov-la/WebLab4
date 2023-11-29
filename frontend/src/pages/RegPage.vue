@@ -11,6 +11,7 @@
       <q-card-section>
         <q-form @submit="onSubmit" class="q-gutter-md">
           <q-input filled v-model="login" label="Login"/>
+          <q-input filled v-model="name" label="Nickname"/>
           <q-input
             v-model="password"
             filled
@@ -52,6 +53,7 @@ import {useQuasar} from 'quasar';
 import axios from 'axios';
 
 const login = ref('');
+const name = ref('');
 
 const password = ref('');
 const passwordRepeat = ref('');
@@ -74,6 +76,7 @@ const onSubmit = () => {
           const data = response.data;
           $q.localStorage.set('token', data.accessToken);
           $q.localStorage.set('refreshToken', data.refreshToken);
+          $q.localStorage.set('name', name.value);
           window.location.href = '/';
         } else {
           console.log(response);

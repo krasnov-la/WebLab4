@@ -1,5 +1,6 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md full-width">
+
     <q-table
     title="Leaderboard"
     separator="cell"
@@ -8,7 +9,7 @@
     row-key="name"
     >
     <template v-slot:body="props">
-        <q-tr :props="props" :class="[(props.row.nickname == userName)?'bg-accent text-white':'bg-white text-black']">
+        <q-tr :props="props" :class="[(props.row.name == userName)?'bg-green text-white':'bg-white text-black']">
           <q-td
             v-for="col in props.cols"
             :key="col.name"
@@ -19,6 +20,9 @@
         </q-tr>
       </template>
     </q-table>
+    <q-btn class="q-ma-sm text-black" size="xl" color="white" to="/" style="border-radius: 10px">
+          Back to menu
+    </q-btn>
   </div>
 </template>
 
@@ -26,8 +30,11 @@
 import {computed, ref, reactive, onMounted} from 'vue';
 import { QTableProps } from 'quasar';
 import axios from 'axios';
+import {useQuasar} from 'quasar';
 
-const userName = ref('name3');
+const $q = useQuasar();
+
+const userName = $q.localStorage.getItem('name');
 const state = reactive({
   rows: [{
     name : '',
