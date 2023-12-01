@@ -1,5 +1,7 @@
 <template>
-  <q-page>
+  <q-page
+  class="col items-center"
+  >
     <ProfileComponent></ProfileComponent>
   </q-page>
 </template>

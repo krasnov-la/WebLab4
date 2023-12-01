@@ -68,7 +68,7 @@ const onSubmit = () => {
     axios
       .post(process.env.API + '/Auth/Register', {
         login: login.value,
-        displayName: login.value,
+        displayName: name.value,
         password: password.value,
       })
       .then((response) => {
@@ -76,7 +76,7 @@ const onSubmit = () => {
           const data = response.data;
           $q.localStorage.set('token', data.accessToken);
           $q.localStorage.set('refreshToken', data.refreshToken);
-          $q.localStorage.set('name', name.value);
+          $q.localStorage.set('name', data.displayName);
           window.location.href = '/';
         } else {
           console.log(response);

@@ -1,27 +1,31 @@
 <template>
   <q-page>
+    <div class="q-ma-xl">
+      <div class="q-py-xl row items-center">
     <q-form
     @submit="onSubmit"
     class="q-mt-lg"
     style="margin: 2em auto; max-width: 24em; position: relative;"
     >
 
-            <div class="q-my-md">
+            <div class="q-my-xl">
               <q-input
                square
                filled
                v-model="nickName"
-               label="Nickname:"
+               label="New Nickname:"
                class="text-right"
+               bg-color="white"
                />
             </div>
-            <div class="q-my-md" >
+            <div class="q-my-xl" >
               <q-input
               v-model="password"
               square
               filled
               :type="isPwd ? 'password' : 'text'"
               label="New password"
+              bg-color="white"
               >
                   <template v-slot:append>
                     <q-icon
@@ -34,15 +38,16 @@
             </div>
             <q-btn label="Save" type="submit" color="positive"/>
       </q-form>
+    </div>
       <q-btn
-      class="q-ma-sm text-black"
+      class="q-my-xl text-black row"
       size="xl"
       color="white"
       to="/"
-      style="border-radius: 10px"
       >
           Back to menu
     </q-btn>
+  </div>
   </q-page>
 </template>
 

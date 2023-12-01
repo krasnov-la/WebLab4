@@ -1,36 +1,61 @@
 <template>
-  <div class="q-pa-md full-width">
-
+  <div
+  class="q-pb-md full-width"
+  style="height: 60%;"
+  >
+  <div class="row items-center justify-evenly">
     <q-table
     title="Leaderboard"
+    title-class="tableHeader"
     separator="cell"
     :columns="tColumns.columns"
     :rows="sortedRows"
     row-key="name"
+    class="myStyle q-pb-lg  q-ma-xl transparent no-shadow text-white row items-center"
+    :hide-pagination="true"
+    :rows-per-page-options="[10]"
+    :bordered="false"
+    table-header-class="my-special-class"
+    table-colspan="2"
+    dark
+
     >
-    <template v-slot:body="props">
-        <q-tr :props="props" :class="[(props.row.name == userName)?'bg-green text-white':'bg-white text-black']">
-          <q-td
-            v-for="col in props.cols"
-            :key="col.name"
-            :props="props"
+      <template v-slot:body="props">
+          <q-tr :props="props"
+          :class="[(props.row.name == userName) ?'text-green-14' : 'text-white']"
+          :style="[(props.row.name == userName) ?'font-weight: bold;' : 'font-weight: normal;']"
           >
-            {{ col.value }}
-          </q-td>
-        </q-tr>
+            <q-td
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+              class="no-border"
+              style="font-size: 18px;"
+            >
+              {{ col.value }}
+            </q-td>
+          </q-tr>
       </template>
     </q-table>
-    <q-btn class="q-ma-sm text-black" size="xl" color="white" to="/" style="border-radius: 10px">
-          Back to menu
+    </div>
+    <q-btn
+    class="q-ma-xl text-black row items-center"
+    size="xl"
+    color="white"
+    to="/"
+    style="border-radius: 10px;"
+    >
+      Back to menu
     </q-btn>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref, reactive, onMounted} from 'vue';
+import {computed, reactive, onMounted} from 'vue';
 import { QTableProps } from 'quasar';
 import axios from 'axios';
 import {useQuasar} from 'quasar';
+import { time } from 'console';
 
 const $q = useQuasar();
 
@@ -38,19 +63,21 @@ const userName = $q.localStorage.getItem('name');
 const state = reactive({
   rows: [{
     name : '',
-    score: ''
+    score : ''
   }]
 })
 
-const num = 20;
+const num = 10;
 onMounted(() =>{
   axios
     .get(process.env.API + `/Leaderboard/${num}`)
     .then((response) => {
       state.rows = response.data;
-    })
+    });
   }
 )
+
+const headerStyle = "border: transparent; font-weight: bold; font-size: 22px;";
 
 const tColumns : QTableProps ={
   columns : [
@@ -58,13 +85,15 @@ const tColumns : QTableProps ={
     name: 'name',
     align: 'center',
     label: 'Nickname',
-    field: 'name'
+    field: 'name',
+    headerStyle: headerStyle
   },
   {
     name: 'score',
     align: 'center',
     label: 'Score',
     field: 'score',
+    headerStyle: headerStyle
   },
 ]}
 
@@ -74,3 +103,10 @@ const sortedRows = computed(() => {
     );
 })
 </script>
+
+<style>
+.tableHeader{
+  font-weight: bold;
+  font-size: 40px;
+}
+</style>
