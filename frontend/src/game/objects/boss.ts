@@ -16,6 +16,11 @@ export class Boss extends GameObjects.Sprite
     private _damageCount : integer = 0;
     private _phaseNumber : integer = 1;
 
+    private _delayMult : integer = 0;
+    private _speedMult : integer = 0;
+
+    private _shiftPhaseDamageCount : integer = 250;
+
     public get DamageCount() : integer {
         return this._damageCount;
     }
@@ -38,14 +43,8 @@ export class Boss extends GameObjects.Sprite
         this._patterns.push(new RingPattern());
         this._patterns.push(new SpiralPattern());
         this._patterns.push(new ChaosPattern());
+        this._updatePhase();
     }
-
-    /*public Attack() : Promise<string>
-    {
-
-        //Рандомизировать выбор атак
-        this._patterns[0].Spawn(this._scene);
-    }*/
 
     public GetRandomPattern() : Pattern
     {
@@ -60,9 +59,16 @@ export class Boss extends GameObjects.Sprite
         }
     }
 
+    public StopAttack() : void 
+    {
+        this._curPattern?.Stop(this._scene);
+    }
+
     public AssignNewPattern() : void 
     {
         this._curPattern = this.GetRandomPattern();
+        this._curPattern.Delay /= this._delayMult;
+        this._curPattern.Speed /= this._speedMult;
         this._curPattern.Spawn(this._scene).then((msg : string) => {
             this.AssignNewPattern();
         });
@@ -71,22 +77,26 @@ export class Boss extends GameObjects.Sprite
     public Damage(damageCount : integer = 5)
     {
         this._damageCount += damageCount;
-        this.UpdatePhase();
-        console.log("hit");
+        this._updatePhase();
     }
 
-    private UpdatePhase() : void 
+    private _updatePhase() : void 
     {
-        const _shiftPhaseDamageCount : integer = 150;
-        this._phaseNumber = Math.ceil(this._damageCount / _shiftPhaseDamageCount);
+        const eps = 0.00001;
+        if(this._damageCount < eps) this._phaseNumber = 1;
+        else this._phaseNumber = Math.ceil(this._damageCount / this._shiftPhaseDamageCount);
 
-        const colorShift = 5;
-        const colorShiftReduce = 1 - (1 / 50) * Math.min(this._phaseNumber, 50);
-        const k = Math.floor(colorShift * colorShiftReduce * this._phaseNumber);
-        const tintColor = 0xffffff - k * 0x101;
+        this._updateBossSprite();
+        this._updateBossStats();
+    }
+
+    private _updateBossStats() : void {
+        this._delayMult = this._speedMult = (-80) / (this._phaseNumber + 35) + 3;
+    }
+
+    private _updateBossSprite() : void {
+        const colorShift = (-4000) / (this._phaseNumber + 15) + 250;
+        const tintColor = 0xffffff - colorShift * 0x101;
         this.setTint(tintColor);
-
-        console.log(k);
-        console.log(this.tint);
     }
 } 

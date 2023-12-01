@@ -5,6 +5,10 @@ export class Player extends GameObjects.Sprite
     private _radius;
     private _angle;
     private _canvas;
+    private _playerBaseDamage = 20;
+
+    private _minRad = 100;
+    private _maxRad = 200;
 
     public get rad()
     {
@@ -13,7 +17,7 @@ export class Player extends GameObjects.Sprite
 
     public set rad(newRad : number)
     {
-        if (newRad >= 100 && newRad <= 200) this._radius = newRad;
+        if (newRad >= this._minRad && newRad <= this._maxRad) this._radius = newRad;
     }
 
     public get ang()
@@ -23,7 +27,15 @@ export class Player extends GameObjects.Sprite
 
     public set ang(newAng : number)
     {
-        this._angle = newAng;;
+        this._angle = newAng;
+    }
+
+    public get PlayerBaseDamage() : number {
+        return this._playerBaseDamage;
+    }
+
+    public set PlayerBaseDamage(val : number) {
+        this._playerBaseDamage = val;
     }
 
     constructor(scene: Scene, radius : number, angle : number) 
@@ -54,8 +66,15 @@ export class Player extends GameObjects.Sprite
         this.reposition();
     }
 
-    public damage() : void
-    {
-        this.destroy();
+    public GetDamage() : integer {
+        return Math.ceil(this._damageMult() * this._playerBaseDamage);
+    }
+
+    private _damageMult() : number {
+        const radDiff = this._maxRad - this._minRad;
+        const curRadDiff = this._radius - this._minRad;
+        const pureCoeff = 1 - curRadDiff / radDiff;
+        const finalCoeff = (0.8) * pureCoeff + 0.2;
+        return finalCoeff;
     }
 }

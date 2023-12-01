@@ -2,6 +2,7 @@ import { BossProjectile } from "./bossProjectile";
 import { MainScene } from "../scenes/MainScene";
 import { Pattern } from "./pattern";
 import { BossBullet } from "./bossBullet";
+import Bluebird from "bluebird";
 
 export class ChaosPattern extends Pattern
 {
@@ -15,7 +16,7 @@ export class ChaosPattern extends Pattern
         this._speed = Math.max(0, val);
     }
 
-    private _delay : integer = 1700;
+    private _delay : integer = 2000;
 
     public get Delay() : integer {
         return this._delay;
@@ -25,8 +26,10 @@ export class ChaosPattern extends Pattern
         this._delay = Math.max(0, val);
     }
 
-    public Spawn(scene : MainScene): Promise<string> {
-        return new Promise((resolve) => {
+    private _promise? : Bluebird<string>;
+
+    public Spawn(scene : MainScene): Bluebird<string> {
+        return this._promise = new Bluebird<string>((resolve) => {
             let i : integer = 0;
             const bulletCount : integer = 5;
             const waveCount : integer = 3;
@@ -42,5 +45,11 @@ export class ChaosPattern extends Pattern
                 resolve("ring pattern end");
             }, this._delay);
         });
+    }
+
+    public Stop(scene : MainScene): void {
+        if(this._promise != null) {
+            this._promise.cancel();
+        }
     }
 }
