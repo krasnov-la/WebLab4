@@ -51,7 +51,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = access,
-                RefreshToken = user.RefreshToken
+                RefreshToken = user.RefreshToken,
+                DisplayName = user.DisplayName
             });
         }
 
@@ -78,7 +79,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = access,
-                RefreshToken = user.RefreshToken
+                RefreshToken = user.RefreshToken,
+                DisplayName = user.DisplayName
             });
         }
 
@@ -109,7 +111,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = newAccess,
-                RefreshToken = newRefresh
+                RefreshToken = newRefresh,
+                DisplayName = user.DisplayName
             });
         }
     }
