@@ -3,12 +3,14 @@ using backend.DataAccess.Repository;
 using backend.Models.API;
 using backend.Models.DataBase;
 using backend.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [ApiController]
+    [EnableCors("_myAllowSpecificOrigins")]
     [Route("/[controller]")]
     public class AuthController : ControllerBase
     {
@@ -49,7 +51,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = access,
-                RefreshToken = user.RefreshToken
+                RefreshToken = user.RefreshToken,
+                DisplayName = user.DisplayName
             });
         }
 
@@ -76,7 +79,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = access,
-                RefreshToken = user.RefreshToken
+                RefreshToken = user.RefreshToken,
+                DisplayName = user.DisplayName
             });
         }
 
@@ -107,7 +111,8 @@ namespace backend.Controllers
 
             return Ok(new AuthResponse(){
                 AccessToken = newAccess,
-                RefreshToken = newRefresh
+                RefreshToken = newRefresh,
+                DisplayName = user.DisplayName
             });
         }
     }

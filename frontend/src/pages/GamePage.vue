@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page>
     <PhaserContainer/>
   </q-page>
 </template>

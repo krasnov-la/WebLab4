@@ -3,7 +3,7 @@
     <q-table
     title="Leaderboard"
     separator="cell"
-    :columns="tableProps.columns"
+    :columns="tColumns.columns"
     :rows="sortedRows"
     row-key="name"
     >
@@ -23,18 +23,35 @@
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, ref, reactive, onMounted} from 'vue';
 import { QTableProps } from 'quasar';
+import axios from 'axios';
 
 const userName = ref('name3');
+const state = reactive({
+  rows: [{
+    name : '',
+    score: ''
+  }]
+})
 
-const tableProps :QTableProps = {
-  columns:[
+const num = 20;
+onMounted(() =>{
+  axios
+    .get(process.env.API + `/Leaderboard/${num}`)
+    .then((response) => {
+      state.rows = response.data;
+    })
+  }
+)
+
+const tColumns : QTableProps ={
+  columns : [
   {
-    name: 'nickname',
+    name: 'name',
     align: 'center',
     label: 'Nickname',
-    field: 'nickname'
+    field: 'name'
   },
   {
     name: 'score',
@@ -42,18 +59,10 @@ const tableProps :QTableProps = {
     label: 'Score',
     field: 'score',
   },
-],
-  rows:[
-    {nickname: 'name1', score: '10'},
-    {nickname: 'name2', score: '14'},
-    {nickname: 'name3', score: '100'},
-    {nickname: 'name4', score: '50'},
-    {nickname: 'name5', score: '60'},
-  ]
-}
+]}
 
 const sortedRows = computed(() => {
-  return tableProps.rows?.slice().toSorted(
+  return state.rows.slice().toSorted(
     (b, a) => parseFloat(a.score) - parseFloat(b.score)
     );
 })
