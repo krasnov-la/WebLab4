@@ -5,6 +5,7 @@ import { PlayerBullet } from "../objects/playerBullet";
 import { Boss } from "../objects/boss";
 import { BossProjectile } from "../objects/bossProjectile";
 import { forEachChild } from "typescript";
+import { useUserStore } from "src/stores/user";
 
 export class MainScene extends Scene {
   public _player : Player | undefined;
@@ -62,14 +63,14 @@ export class MainScene extends Scene {
     if(this.PlayerIsAlive) {
       this.handleKeyboard();
       this.shoot();
+      if(this._scoreText != null) {
+        this._scoreText!.text = String(this._boss?.DamageCount);
+      }
     }
     this._boss?.StartAttack();
     if (this._bossBullets)
       for (let i = 0; i < this._bossBullets.getChildren().length; i++)
         this._bossBullets.getChildren()[i].update();
-    if(this._scoreText != null) {
-      this._scoreText!.text = String(this._boss?.DamageCount);
-    }
   }
 
   handleKeyboard(): void
@@ -94,11 +95,16 @@ export class MainScene extends Scene {
     this._player?.destroy();
     this._playerIsAlive = false;
     this._boss?.StopAttack();
+
+    const userStore = useUserStore();
+    userStore.updateRecord(this._boss!.DamageCount);
+
     this._gameOverText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.4, 'GAME OVER', { 
       fontFamily: 'Calibri',
       fontSize: '60px'
     }).setOrigin(0.5, 0.5);
-    const button = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.55, "RESTART",{ 
+
+    const restartButton = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.55, "RESTART",{ 
       fontFamily: 'Calibri',
       fontSize: '30px',
       color: '#201726'
@@ -107,8 +113,20 @@ export class MainScene extends Scene {
       .setStyle({ backgroundColor: '#FFF' })
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => this.scene.restart())
-      .on('pointerover', () => button.setStyle({ fill: '#f39c12' }))
-      .on('pointerout', () => button.setStyle({ fill: '#201726' }));
+      .on('pointerover', () => restartButton.setStyle({ fill: '#f39c12' }))
+      .on('pointerout', () => restartButton.setStyle({ fill: '#201726' }));
+
+    const quitButton = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.7, "QUIT",{ 
+        fontFamily: 'Calibri',
+        fontSize: '30px',
+        color: '#201726'
+      }).setOrigin(0.5, 0.5)
+        .setPadding(10)
+        .setStyle({ backgroundColor: '#FFF' })
+        .setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => window.location.href = "/")
+        .on('pointerover', () => quitButton.setStyle({ fill: '#f39c12' }))
+        .on('pointerout', () => quitButton.setStyle({ fill: '#201726' }));
   }
 }
 
