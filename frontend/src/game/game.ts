@@ -23,7 +23,7 @@ export function launch() {
       default: 'arcade'
     },
     parent: 'game',
-    backgroundColor: '#201726',
+    transparent: true,
     scene: [
       PreloadScene,
       MainScene
