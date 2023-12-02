@@ -1,14 +1,20 @@
 import { Game, AUTO, Scale } from "phaser";
 import { MainScene } from "./scenes/MainScene";
 import { PreloadScene } from "./scenes/PreloadScene";
+import * as Bluebird from "bluebird";
+
 
 export function launch() {
+  Bluebird.Promise.config({
+    cancellation: true
+  });
+
   return new Game({
     type: AUTO,
     scale: {
-      width: '100%',
+      width: '80%',
       autoCenter: Scale.CENTER_BOTH,
-      height: '100%',
+      height: '80%',
     },
     input: {
       keyboard: true
@@ -17,7 +23,7 @@ export function launch() {
       default: 'arcade'
     },
     parent: 'game',
-    transparent: true,
+    backgroundColor: '#201726',
     scene: [
       PreloadScene,
       MainScene

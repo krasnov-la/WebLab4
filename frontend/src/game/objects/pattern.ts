@@ -1,3 +1,4 @@
+import Bluebird from "bluebird";
 import { MainScene } from "../scenes/MainScene";
 import { BossProjectile } from "./bossProjectile";
 
@@ -9,5 +10,6 @@ export abstract class Pattern
     public abstract get Delay() : integer;
     public abstract set Delay(val : integer);
 
-    public abstract Spawn(scene : MainScene) : Promise<string>
+    public abstract Spawn(scene : MainScene) : Bluebird<string>;
+    public abstract Stop(scene : MainScene) : void;
 }

@@ -2,6 +2,7 @@ import { BossProjectile } from "./bossProjectile";
 import { MainScene } from "../scenes/MainScene";
 import { Pattern } from "./pattern";
 import { BossBullet } from "./bossBullet";
+import Bluebird from "bluebird";
 
 export class SpiralPattern extends Pattern
 {
@@ -25,21 +26,28 @@ export class SpiralPattern extends Pattern
         this._delay = Math.max(0, val);
     }
 
-    private _promise? : Promise<string>;
+    private _promise? : Bluebird<string>;
 
-    public Spawn(scene : MainScene): Promise<string> {
-        return this._promise = new Promise((resolve) => {
+    public Spawn(scene : MainScene): Bluebird<string> {
+        return this._promise = new Bluebird<string>((resolve) => {
             let i : integer = 0;
             const bulletCount = 20;
+            const randAngle : number = 2 * Math.PI * Math.random();
 
             const setIntId : any = setInterval(() => {
                 if(i >= bulletCount) clearInterval(setIntId);
-                new BossBullet(scene, i++ * 2 * Math.PI / bulletCount, 100);
+                new BossBullet(scene, (i++ * 2 * Math.PI / bulletCount) + randAngle, 100);
             }, this._speed);
 
             setTimeout(() => {
                 resolve("ring pattern end");
             }, this._delay);
         });
+    }
+
+    public Stop(scene : MainScene) : void {
+        if(this._promise != null) {
+            this._promise.cancel();
+        }
     }
 }
