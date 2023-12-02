@@ -55,7 +55,6 @@ import {computed, reactive, onMounted} from 'vue';
 import { QTableProps } from 'quasar';
 import axios from 'axios';
 import {useQuasar} from 'quasar';
-import { time } from 'console';
 
 const $q = useQuasar();
 
