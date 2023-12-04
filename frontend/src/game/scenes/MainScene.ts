@@ -60,7 +60,7 @@ export class MainScene extends Scene {
     });
 
     this._scoreText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.1, '0', {
-      fontFamily: 'Calibri',
+      fontFamily: 'Orbitron',
       fontSize: '30px'
     }).setOrigin(0.5, 0.5);
 
@@ -112,12 +112,12 @@ export class MainScene extends Scene {
     userStore.updateRecord(this._boss!.DamageCount);
 
     this._gameOverText = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.4, 'GAME OVER', {
-      fontFamily: 'Calibri',
+      fontFamily: 'Orbitron',
       fontSize: '60px'
     }).setOrigin(0.5, 0.5);
 
     const restartButton = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.55, "RESTART", {
-      fontFamily: 'Calibri',
+      fontFamily: 'Orbitron',
       fontSize: '30px',
       color: '#201726'
     }).setOrigin(0.5, 0.5)
@@ -129,7 +129,7 @@ export class MainScene extends Scene {
       .on('pointerout', () => restartButton.setStyle({fill: '#201726'}));
 
     const quitButton = this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.7, "QUIT", {
-      fontFamily: 'Calibri',
+      fontFamily: 'Orbitron',
       fontSize: '30px',
       color: '#201726'
     }).setOrigin(0.5, 0.5)

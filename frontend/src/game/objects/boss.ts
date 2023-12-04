@@ -5,7 +5,7 @@ import { MainScene } from "../scenes/MainScene";
 import { RingPattern } from "./ringPattern";
 import { SpiralPattern } from "./spiralPattern";
 import { ChaosPattern } from "./chaosPattern";
- 
+
 export class Boss extends GameObjects.Sprite
 {
     private _patterns : Pattern[] = []
@@ -35,7 +35,7 @@ export class Boss extends GameObjects.Sprite
         this._scene = scene;
         scene.physics.world.enableBody(this);
         scene.add.existing(this);
-        this.scale = 1.5;
+        this.scale = 2.5;
         const body : any = this.body;
         body.setSize(15, 15);
         this.play('boss_anim');
@@ -59,12 +59,12 @@ export class Boss extends GameObjects.Sprite
         }
     }
 
-    public StopAttack() : void 
+    public StopAttack() : void
     {
         this._curPattern?.Stop(this._scene);
     }
 
-    public AssignNewPattern() : void 
+    public AssignNewPattern() : void
     {
         this._curPattern = this.GetRandomPattern();
         this._curPattern.Delay /= this._delayMult;
@@ -80,7 +80,7 @@ export class Boss extends GameObjects.Sprite
         this._updatePhase();
     }
 
-    private _updatePhase() : void 
+    private _updatePhase() : void
     {
         const eps = 0.00001;
         if(this._damageCount < eps) this._phaseNumber = 1;
@@ -99,4 +99,4 @@ export class Boss extends GameObjects.Sprite
         const tintColor = 0xffffff - colorShift * 0x101;
         this.setTint(tintColor);
     }
-} 
+}

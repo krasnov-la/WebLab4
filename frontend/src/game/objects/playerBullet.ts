@@ -9,6 +9,7 @@ export class PlayerBullet extends GameObjects.Sprite
         const y = scene._player ? scene._player.y : 0;
         super(scene, x, y, 'bullet');
         this.play('bullet_anim');
+        this.scale = 1.5;
         scene.physics.world.enableBody(this);
         scene.add.existing(this);
         const player = scene._player;
