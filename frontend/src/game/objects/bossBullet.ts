@@ -8,8 +8,8 @@ export class BossBullet extends BossProjectile
     {
         const x = scene._boss ? scene._boss.x : 0;
         const y = scene._boss ? scene._boss.y : 0;
-        super(scene, x, y, 'bullet');
-        this.play('bullet_anim');
+        super(scene, x, y, 'bullet_boss');
+        this.play('bullet_boss_anim');
         this.rotation = -angle + Math.PI / 2;
         if (this.body != null)
         {

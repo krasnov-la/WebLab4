@@ -1,5 +1,5 @@
 import { GameObjects, Scene } from "phaser";
- 
+
 export class Player extends GameObjects.Sprite
 {
     private _radius;
@@ -8,7 +8,7 @@ export class Player extends GameObjects.Sprite
     private _playerBaseDamage = 20;
 
     private _minRad = 100;
-    private _maxRad = 200;
+    private _maxRad = 400;
 
     public get rad()
     {
@@ -38,7 +38,7 @@ export class Player extends GameObjects.Sprite
         this._playerBaseDamage = val;
     }
 
-    constructor(scene: Scene, radius : number, angle : number) 
+    constructor(scene: Scene, radius : number, angle : number)
     {
         super(scene, 0, 0, 'ship');
         scene.physics.world.enableBody(this);
