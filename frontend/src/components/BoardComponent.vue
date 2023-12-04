@@ -1,9 +1,11 @@
 <template>
-  <div
-  class="q-pb-md full-width"
+  <q-card
+  class="q-pb-md column items-center justify-center full-width transparent"
   style="height: 60%;"
+  flat
+
   >
-  <div class="row items-center justify-evenly">
+  <div class="row items-center justify-center">
     <q-table
     title="Leaderboard"
     title-class="tableHeader"
@@ -39,7 +41,7 @@
     </q-table>
     </div>
     <q-btn
-    class="q-ma-xl text-black row items-center"
+    class="q-ma-xl text-black"
     size="xl"
     color="white"
     to="/"
@@ -47,7 +49,7 @@
     >
       Back to menu
     </q-btn>
-  </div>
+  </q-card>
 </template>
 
 <script setup lang="ts">
