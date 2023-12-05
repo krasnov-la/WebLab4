@@ -30,8 +30,11 @@ export class RingPattern extends Pattern
 
     public Spawn(scene : MainScene): Bluebird<string> {
         return this._promise = new Bluebird<string>((resolve) => {
+            const _patternSound = scene.sound.add("ringPatternSound");
             const randAngle : number = 2 * Math.PI * Math.random();
 
+            _patternSound.volume = 0.25;
+            _patternSound.play();
             for(let i : integer = 0; i < 12; i++) {
                 new BossBullet(scene, i * Math.PI / 6 + randAngle, 100);
             }

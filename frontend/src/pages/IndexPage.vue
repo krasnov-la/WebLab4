@@ -30,8 +30,13 @@
 
 <script setup lang="ts">
 import {useQuasar} from 'quasar';
+// import ingame from 'src/assets/ingame.wav';
 
 const $q = useQuasar();
+
+// var audio = new Audio(ingame);
+// audio.volume = 0.5;
+// audio.play();
 
 const authorized = $q.localStorage.getItem('refreshToken') !== null;
 const LogOut = () => {

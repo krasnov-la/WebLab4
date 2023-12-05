@@ -13,6 +13,9 @@ export class MainScene extends Scene {
   private _cursorKeys: Types.Input.Keyboard.CursorKeys | undefined;
   public _playerBullets: Phaser.Physics.Arcade.Group | undefined;
   public _bossBullets: Phaser.Physics.Arcade.Group | undefined;
+  private _gameoverSound?: Phaser.Sound.WebAudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound;
+  private _shootSound?: Phaser.Sound.WebAudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound;
+  private _ingameSound?: Phaser.Sound.WebAudioSound | Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound;
   private _ticks = 0;
 
   private _scoreText?: Phaser.GameObjects.Text;
@@ -48,6 +51,16 @@ export class MainScene extends Scene {
     //Описание физики
     this._playerBullets = this.physics.add.group();
     this._bossBullets = this.physics.add.group();
+
+    this._ingameSound = this.sound.add("ingameSound");
+    this._shootSound = this.sound.add("shootSound");
+    this._gameoverSound = this.sound.add("gameoverSound");
+    this._ingameSound.loop = true;
+    this._ingameSound.volume = 0.5;
+    this._shootSound.volume = 0.1;
+    this._gameoverSound.volume = 0.1;
+
+    this._ingameSound.play();
 
     this.physics.add.overlap(this._playerBullets, this._boss, (boss, projectile) => {
       projectile.destroy();
@@ -99,6 +112,9 @@ export class MainScene extends Scene {
 
   shoot(): void {
     if (this._ticks % 15 != 0) return
+    if(this._shootSound != null) {
+      this._shootSound?.play();
+    }
     new PlayerBullet(this);
   }
 
@@ -107,6 +123,14 @@ export class MainScene extends Scene {
     this._playerIsAlive = false;
     this._shootingStarted = false;
     this._boss?.StopAttack();
+
+    if(this._ingameSound != null) {
+      this._ingameSound?.stop();
+    }
+
+    if(this._gameoverSound != null) {
+      this._gameoverSound?.play();
+    }
 
     const userStore = useUserStore();
     userStore.updateRecord(this._boss!.DamageCount);

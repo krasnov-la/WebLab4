@@ -33,9 +33,12 @@ export class ChaosPattern extends Pattern
             let i : integer = 0;
             const bulletCount : integer = 5;
             const waveCount : integer = 3;
+            const _patternSound = scene.sound.add("chaosPatternSound");
 
             const setIntId : any = setInterval(() => {
                 if(i >= waveCount) clearInterval(setIntId);
+                _patternSound.volume = 0.2;
+                _patternSound.play();
                 for(let j : integer = 0; j < bulletCount; j++)
                     new BossBullet(scene, 2 * Math.PI * Math.random(), 100);
                 i++;

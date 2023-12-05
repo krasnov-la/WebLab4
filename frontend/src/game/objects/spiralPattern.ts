@@ -33,9 +33,12 @@ export class SpiralPattern extends Pattern
             let i : integer = 0;
             const bulletCount = 20;
             const randAngle : number = 2 * Math.PI * Math.random();
+            const _patternSound = scene.sound.add("spiralPatternSound");
 
             const setIntId : any = setInterval(() => {
                 if(i >= bulletCount) clearInterval(setIntId);
+                _patternSound.volume = 0.07;
+                _patternSound.play();
                 new BossBullet(scene, (i++ * 2 * Math.PI / bulletCount) + randAngle, 100);
             }, this._speed);
 
