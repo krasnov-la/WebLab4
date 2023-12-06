@@ -60,8 +60,11 @@ const onSubmit = () => {
           $q.localStorage.set('refreshToken', data.refreshToken);
           $q.localStorage.set('name', data.displayName);
           window.location.href = '/';
-        } else console.log(response);
-      });
+        }
+      })
+      .catch(function (error) {
+      alert('Incorrect Login or Password')
+  })
 
 };
 </script>
