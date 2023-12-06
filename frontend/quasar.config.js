@@ -69,7 +69,8 @@ module.exports = configure(function (/* ctx */) {
       // publicPath: '/',
       // analyze: true,
        env: {
-        API: 'https://localhost:7221',
+        //API: 'https://localhost:7221'
+        API: 'http://localhost:5292'
        },
       // rawDefine: {}
       // ignorePublicFolder: true,
@@ -198,7 +199,7 @@ module.exports = configure(function (/* ctx */) {
         // https://www.electron.build/configuration/configuration
 
         appId: 'frontend'
-      }
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
